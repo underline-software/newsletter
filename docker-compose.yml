@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  newsletter:
+    container_name: newsletter
+    build:
+      dockerfile: Dockerfile
+      context: .
+    restart: always
+    image: newsletter
+    networks:
+      main-network:
+        ipv4_address: ${CONTAINER_IP}
+    env_file:
+      - .env
+    deploy:
+      resources:
+        limits:
+          cpus: 0.50
+          memory: 1G
+        reservations:
+          cpus: 0.25
+          memory: 256M
+networks:
+  main-network:
+    external: true

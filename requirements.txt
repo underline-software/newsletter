@@ -1,0 +1,9 @@
+Flask~=2.3.3
+uuid~=1.30
+datetime~=5.1
+python-dotenv~=1.0.0
+requests~=2.31.0
+mysql.connector~=2.2.9
+mysql.connector.python~=8.1.0
+sqlalchemy~=2.0.20
+PyMySQL~=1.1.0
