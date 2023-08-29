@@ -1,5 +1,4 @@
 import os
-
 from exceptions.PersonalException import ResponseApiException
 from registers.repository_register import repository_register
 from databases.database import Session
@@ -16,7 +15,7 @@ class service_register:
         try:
             return self.repository.save(email, name)
         except Exception as Argument:
-            raise ResponseApiException(os.getenv("MESSAGE_3"), str(Argument.args[1]), 500)
+            raise ResponseApiException(os.getenv("MESSAGE_3"), str(Argument.args[1]), 422)
 
     def getAll(self):
         try:

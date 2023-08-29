@@ -10,7 +10,7 @@ def store():
         email = request.json.get('email')
         name = request.json.get('name')
         service = service_register()
-        return jsonify(service.store(email, name)), 200
+        return jsonify(service.store(email, name)), 202
     except Exception as Argument:
         return jsonify({"message": str(Argument.args[0]), 'error': str(Argument.args[1])
                            , 'code': Argument.args[2]}), Argument.args[2]
