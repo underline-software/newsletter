@@ -1,21 +1,19 @@
 from databases.models import register
-from sqlalchemy.orm import sessionmaker
-
 
 class repository_register:
     def __init__(self, session):
         self.session = session
 
     def save(self, email, name):
-        newRegister = register(email, name)
+        newRegister = register(email=email, name=name)
         self.session.add(newRegister)
         self.session.commit()
 
     def all(self):
-        return self.session.query(register).all()
+        return self.session.query(register.id, register.email, register.name).all()
 
     def show(self, id):
-        return self.session.query(register).filter_by(id=id).first()
+        return self.session.query(register.id, register.email, register.name).filter(register.id==id).first()
 
     def update(self, id, name):
         updateRegister = self.show(id)
