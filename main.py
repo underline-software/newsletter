@@ -1,13 +1,13 @@
-import os
-
 from flask import Flask
 from databases.database import engine
 from databases.models import Base
 from config import config
 from news.routes import pathNews
 from registers.route import pathRegister
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 app.config.from_object(config)
 app.register_blueprint(pathNews, url_prefix='/api/n')
 app.register_blueprint(pathRegister, url_prefix='/api/r')

@@ -20,17 +20,17 @@ def store():
 def all():
     try:
         service = service_register()
-        return jsonify(service.getAll()), 200
+        return jsonify(service.getAll()), 200, {'Access-Control-Allow-Origin': '*'}
     except Exception as Argument:
         return jsonify({"message": str(Argument.args[0]), 'error': str(Argument.args[1])
-                           , 'code': Argument.args[2]}), Argument.args[2]
+                           , 'code': Argument.args[2]}), Argument.args[2], {'Access-Control-Allow-Origin': '*'}
 
 
 @pathRegister.route("/register/<id>", methods=["GET"])
 def show(id):
     try:
         service = service_register()
-        return jsonify(service.show(id)), 200
+        return jsonify(service.show(id)), 200, {'Access-Control-Allow-Origin': '*'}
     except Exception as Argument:
         return jsonify({"message": str(Argument.args[0]), 'error': str(Argument.args[1])
-                           , 'code': Argument.args[2]}), Argument.args[2]
+                           , 'code': Argument.args[2]}), Argument.args[2], {'Access-Control-Allow-Origin': '*'}

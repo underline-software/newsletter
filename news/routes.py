@@ -6,7 +6,7 @@ pathNews = Blueprint('news', __name__)
 def gets_news():
     try:
         source = news()
-        return jsonify(source.get_news()), 200
+        return jsonify(source.get_news()), 200, {'Access-Control-Allow-Origin': '*'}
     except Exception as Argument:
         return jsonify({"message": str(Argument.args[0]), 'error': str(Argument.args[1])
-                           , 'code': Argument.args[2]}), Argument.args[2]
+                           , 'code': Argument.args[2]}), Argument.args[2], {'Access-Control-Allow-Origin': '*'}
