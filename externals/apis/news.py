@@ -17,7 +17,7 @@ class news:
     def get_externals_news(self):
         url = f"{self.base_url}{self.api_key}"
         try:
-            response = requests.get(url, timeout=5)
+            response = requests.get(url, timeout=3)
             data = response.json()
             if response.status_code == 200:
                 return data.get('articles', [])
