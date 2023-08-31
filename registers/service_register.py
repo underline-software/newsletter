@@ -13,9 +13,12 @@ class service_register:
 
     def store(self, email, name):
         try:
-            return self.repository.save(email, name)
+            if len(email) > 0 and len(name) > 0:
+                return self.repository.save(email, name)
+            else:
+                raise ResponseApiException("Campos vacios", "Largo de campos insuficiente", 400)
         except Exception as Argument:
-            raise ResponseApiException(os.getenv("MESSAGE_3"), str(Argument.args[1]), 422)
+            raise ResponseApiException(os.getenv("MESSAGE_3"), str(Argument.args[1]), str(Argument.args[2]))
 
     def getAll(self):
         try:

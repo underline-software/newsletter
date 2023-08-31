@@ -16,7 +16,7 @@ class repository_register:
             return newRegister.id
         except IntegrityError as e:
             self.session.rollback()
-            raise ResponseApiException("", "Registro Duplicado", 422)
+            raise ResponseApiException("", "Registro Duplicado", 409)
 
     def all(self):
         return self.session.query(register.id, register.email, register.name).all()
