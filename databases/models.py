@@ -5,6 +5,10 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 
+#
+# Establece los campos del modelo en el ORM
+#
+
 class register(Base):
     __tablename__ = 'register'
     id = Column(String(255), primary_key=True, default=uuid.uuid4)

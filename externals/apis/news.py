@@ -1,11 +1,12 @@
 import os
 import requests
-from exceptions.PersonalException import ResponseApiException
+from exceptions.personal_exception import personal_exception
 from dotenv import load_dotenv
-
 load_dotenv()
 
-
+#
+# Clase que funciona como proveedor externo de servicio de noticias
+#
 class news:
     api_key = ""
     base_url = ""
@@ -22,6 +23,6 @@ class news:
             if response.status_code == 200:
                 return data.get('articles', [])
             else:
-                raise ResponseApiException(os.getenv("MESSAGE_1"), str(response.text), response.status_code)
+                raise personal_exception(os.getenv("MESSAGE_1"), str(response.text), response.status_code)
         except Exception as Argument:
-            raise ResponseApiException(os.getenv("MESSAGE_1"), str(Argument.args[1]), 500)
+            raise personal_exception(os.getenv("MESSAGE_1"), str(Argument.args[1]), 500)

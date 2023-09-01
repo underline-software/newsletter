@@ -1,37 +1,29 @@
 from sqlalchemy.exc import IntegrityError
-
 from databases.models import register
-from exceptions.PersonalException import ResponseApiException
+from exceptions.personal_exception import personal_exception
 
+
+#
+# Clase que funciona como orquestador para el acceso a los datos en la persistencia
+#
 
 class repository_register:
     def __init__(self, session):
         self.session = session
 
     def save(self, email, name):
-        newRegister = register(email=email, name=name)
-        self.session.add(newRegister)
+        new_register = register(email=email, name=name)
+        self.session.add(new_register)
         try:
             self.session.commit()
-            return newRegister.id
-        except IntegrityError as e:
+            return new_register.id
+        except IntegrityError as Argument:
+            print(Argument)
             self.session.rollback()
-            raise ResponseApiException("", "Registro Duplicado", 409)
+            raise personal_exception("", "Registro Duplicado", 409)
 
     def all(self):
         return self.session.query(register.id, register.email, register.name).all()
 
     def show(self, id):
         return self.session.query(register.id, register.email, register.name).filter(register.id == id).first()
-
-    def update(self, id, name):
-        updateRegister = self.show(id)
-        if updateRegister:
-            updateRegister.name = name
-            self.session.commit()
-
-    def delete(self, id):
-        deleteRegister = self.show(id)
-        if deleteRegister:
-            self.session.delete(deleteRegister)
-            self.session.commit()

@@ -1,8 +1,13 @@
 import os
-from exceptions.PersonalException import ResponseApiException
+from exceptions.personal_exception import personal_exception
 from registers.repository_register import repository_register
 from databases.database import Session
+from cryptography.fernet import Fernet
 
+
+#
+# Clase que funciona como manejador de las reglas de negocio para el registro de newsletter
+#
 
 class service_register:
     repository = ""
@@ -14,29 +19,26 @@ class service_register:
     def store(self, email, name):
         try:
             if len(email) > 0 and len(name) > 0:
-                return self.repository.save(email, name)
+                cipher_suite = Fernet(os.getenv("SECRET_KEY"))
+                return self.repository.save(cipher_suite.encrypt(email), name)
             else:
-                raise ResponseApiException("Campos vacios", "Largo de campos insuficiente", 400)
+                raise personal_exception("Campos vacios", "Largo de campos insuficiente", 400)
         except Exception as Argument:
-            raise ResponseApiException(os.getenv("MESSAGE_3"), str(Argument.args[1]), str(Argument.args[2]))
+            raise personal_exception(os.getenv("MESSAGE_3"), str(Argument.args[1]), str(Argument.args[2]))
 
-    def getAll(self):
+    def all(self):
         try:
             result = self.repository.all()
             if len(result) > 0:
-                return [{'id': row.id, 'email': row.email, 'name': row.name} for row in result]
+                cipher_suite = Fernet(os.getenv("SECRET_KEY"))
+                return [{'id': row.id, 'email': cipher_suite.decrypt(row.email), 'name': row.name} for row in result]
         except Exception as Argument:
-            raise ResponseApiException(os.getenv("MESSAGE_2"), str(Argument.args[1]), 500)
+            raise personal_exception(os.getenv("MESSAGE_2"), str(Argument.args[1]), 500)
 
     def show(self, id):
         result = self.repository.show(id)
         if result is not None and len(result) > 0:
-            return {'id': result[0], 'email': result[1], 'name': result[2]}
+            cipher_suite = Fernet(os.getenv("SECRET_KEY"))
+            return {'id': result[0], 'email': cipher_suite.decrypt(result[1]), 'name': result[2]}
         else:
-            raise ResponseApiException(os.getenv("MESSAGE_2"), os.getenv("NOT_FOUND"), 404)
-
-    def update(self, id, name):
-        return self.repository.update(id, name)
-
-    def delete(self, id):
-        return self.repository.delete(id)
+            raise personal_exception(os.getenv("MESSAGE_2"), os.getenv("NOT_FOUND"), 404)
